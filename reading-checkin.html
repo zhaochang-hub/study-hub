@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每日语文阅读打卡 — 一零一中学双榆树校区</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --card: #ffffff;
+    --text: #3d3226;
+    --sub: #8b7e6a;
+    --accent: #8b5e3c;
+    --accent-light: #f5efe8;
+    --green: #5a7d5a;
+    --green-light: #edf5ed;
+    --red: #c0504a;
+    --gold: #c9933c;
+    --gold-light: #fef9f0;
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
+    background: var(--bg);
+    color: var(--text);
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 16px;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+  .header {
+    text-align: center;
+    padding: 20px 0 8px;
+  }
+  .header .school {
+    font-size: 12px;
+    color: var(--sub);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .header .title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .date-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 0 16px;
+    font-size: 14px;
+    color: var(--sub);
+  }
+  .date-bar .weekday {
+    font-weight: 600;
+    color: var(--accent);
+    padding: 2px 10px;
+    background: var(--accent-light);
+    border-radius: 20px;
+    font-size: 13px;
+  }
+  .date-bar .weekend-tag {
+    background: #fef0e0;
+    color: var(--gold);
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+  }
+
+  /* 提醒卡片 */
+  .reminder-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--accent);
+  }
+  .reminder-card .icon-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .reminder-card .icon-row .emoji {
+    font-size: 24px;
+  }
+  .reminder-card .icon-row .label {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--accent);
+  }
+  .reminder-card .msg {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .reminder-card .highlight {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* 进度卡片 */
+  .progress-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .progress-section h3 {
+    font-size: 14px;
+    color: var(--sub);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .book-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .book-progress .book-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .book-progress .book-name {
+    width: 90px;
+    flex-shrink: 0;
+    font-weight: 500;
+    text-align: right;
+  }
+  .book-progress .bar-wrap {
+    flex: 1;
+    height: 20px;
+    background: #f0ece6;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+  .book-progress .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #c9a96e, #8b9d6b);
+    border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .book-progress .bar-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .book-progress .book-pct {
+    width: 44px;
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--sub);
+  }
+  .book-progress .book-active {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* 打卡表单 */
+  .checkin-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .checkin-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .form-row {
+    margin-bottom: 12px;
+  }
+  .form-row label {
+    display: block;
+    font-size: 12px;
+    color: var(--sub);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .form-row select, .form-row input, .form-row textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #e8e2d6;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fdfbf7;
+    color: var(--text);
+    transition: border-color 0.2s;
+  }
+  .form-row select:focus, .form-row input:focus, .form-row textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .form-row textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+  .form-row .hint {
+    font-size: 11px;
+    color: #b0a590;
+    margin-top: 2px;
+  }
+  .btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 1px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn:hover { background: #7a4e2e; }
+  .btn:active { transform: scale(0.98); }
+
+  .weekend-extra {
+    background: var(--gold-light);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--gold);
+    border: 1px solid #f0e0c0;
+  }
+  .weekend-extra .title {
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  /* 反馈 */
+  .feedback {
+    background: var(--green-light);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--green);
+    border: 1px solid #d0e8d0;
+    display: none;
+  }
+  .feedback.show { display: block; }
+
+  /* 打卡历史 */
+  .history-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .history-section h3 {
+    font-size: 14px;
+    color: var(--sub);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .history-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    padding: 8px 10px;
+    background: #fdfbf7;
+    border-radius: 8px;
+    border: 1px solid #f0ece6;
+  }
+  .history-item .hi-date {
+    font-size: 11px;
+    color: var(--sub);
+    flex-shrink: 0;
+    width: 52px;
+    padding-top: 1px;
+  }
+  .history-item .hi-content {
+    flex: 1;
+    line-height: 1.5;
+  }
+  .history-item .hi-book {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .history-item .hi-summary {
+    color: var(--text);
+  }
+  .history-empty {
+    text-align: center;
+    color: #c0b8a8;
+    font-size: 13px;
+    padding: 20px 0;
+  }
+
+  /* 连续打卡 */
+  .streak-bar {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    padding: 0 0 6px;
+    flex-wrap: wrap;
+  }
+  .streak-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e8e2d6;
+  }
+  .streak-dot.done {
+    background: var(--green);
+  }
+  .streak-dot.today {
+    background: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-light);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 11px;
+    color: #c0b8a8;
+    line-height: 1.8;
+  }
+
+  /* 设置弹窗 */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: flex; align-items: flex-end; justify-content: center;
+    z-index: 100;
+  }
+  .modal {
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    padding: 20px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--accent);
+  }
+  .modal .form-row {
+    margin-bottom: 10px;
+  }
+  .modal .form-row input {
+    width: 80px;
+    display: inline-block;
+  }
+  .modal .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .modal .btn-secondary {
+    flex: 1;
+    padding: 10px;
+    background: #f0ece6;
+    color: var(--text);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .settings-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1.5px solid #e8e2d6;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="school">北京一零一中学 · 双榆树校区</div>
+  <div class="title">每日语文阅读打卡</div>
+</div>
+
+<div class="date-bar" id="dateBar"></div>
+
+<div class="streak-bar" id="streakBar"></div>
+
+<div class="reminder-card" id="reminderCard"></div>
+
+<div class="progress-section" id="progressSection">
+  <h3>阅读进度</h3>
+  <div class="book-progress" id="bookProgress"></div>
+</div>
+
+<!-- 打卡成功反馈 -->
+<div class="feedback" id="feedback"></div>
+
+<!-- 今日已打卡则显示摘要 -->
+<div class="checkin-card" id="checkinCard">
+  <h3 id="checkinTitle">📝 今日打卡</h3>
+  <div id="checkinForm">
+    <div class="form-row">
+      <label>选择书籍</label>
+      <select id="bookSelect"></select>
+    </div>
+    <div class="form-row">
+      <label>今日页码范围（如：1-25）</label>
+      <input type="text" id="pageRange" placeholder="例：1-25" />
+    </div>
+    <div class="form-row">
+      <label>一句话摘要</label>
+      <textarea id="summary" placeholder="今天读了什么内容？一句话概括……"></textarea>
+    </div>
+    <div class="weekend-extra" id="weekendExtra" style="display:none;">
+      <div class="title">📖 周末特别任务：写一段读后感（100-200字）</div>
+      <textarea id="reflection" placeholder="写下你的阅读感悟……" style="min-height:80px;margin-top:4px;"></textarea>
+    </div>
+    <button class="btn" onclick="submitCheckin()">✅ 完成打卡</button>
+  </div>
+  <div id="checkinDone" style="display:none;"></div>
+</div>
+
+<div class="history-section">
+  <h3>📋 最近打卡记录</h3>
+  <div class="history-list" id="historyList"></div>
+</div>
+
+<div class="footer">
+  坚持阅读，日积月累，终有所成。<br>
+  一零一中学双榆树校区 · 初一语文
+</div>
+
+<button class="settings-btn" onclick="toggleSettings()" title="设置书籍页数">⚙</button>
+
+<div class="modal-overlay" id="settingsModal" style="display:none;">
+  <div class="modal">
+    <h3>📚 书籍总页数设置</h3>
+    <div id="settingsForm"></div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="toggleSettings()">取消</button>
+      <button class="btn" style="flex:1;" onclick="saveSettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== 书籍数据 ==========
+const DEFAULT_BOOKS = [
+  { id: '朝花夕拾', author: '鲁迅', semester: '初一上', totalPages: 120, active: true },
+  { id: '西游记', author: '吴承恩', semester: '初一上', totalPages: 850, active: true },
+  { id: '骆驼祥子', author: '老舍', semester: '初一下', totalPages: 250, active: false },
+  { id: '海底两万里', author: '凡尔纳', semester: '初一下', totalPages: 420, active: false },
+];
+
+const STORAGE_KEY = 'reading_checkin_data';
+const SETTINGS_KEY = 'reading_checkin_settings';
+
+// ========== 数据管理 ==========
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : { checkins: [], lastStreakDate: null, streak: 0 };
+  } catch { return { checkins: [], lastStreakDate: null, streak: 0 }; }
+}
+
+function saveData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+
+function saveSettingsData(settings) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+function getBooks() {
+  const settings = loadSettings();
+  return DEFAULT_BOOKS.map(b => ({
+    ...b,
+    totalPages: settings[b.id] ?? b.totalPages
+  }));
+}
+
+// ========== 日期工具 ==========
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function isWeekend() {
+  const d = new Date();
+  return d.getDay() === 0 || d.getDay() === 6;
+}
+
+function getWeekday() {
+  const days = ['日','一','二','三','四','五','六'];
+  return '周' + days[new Date().getDay()];
+}
+
+function formatDate() {
+  const d = new Date();
+  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+}
+
+// ========== 阅读进度计算 ==========
+function getBookProgress() {
+  const data = loadData();
+  const books = getBooks();
+  return books.map(book => {
+    const bookCheckins = data.checkins.filter(c => c.bookId === book.id);
+    let maxPage = 0;
+    bookCheckins.forEach(c => {
+      const m = c.pageRange.match(/(\d+)\s*[-–—至到]\s*(\d+)/);
+      if (m) {
+        const end = parseInt(m[2]);
+        if (end > maxPage) maxPage = end;
+      }
+    });
+    const pct = book.totalPages > 0 ? Math.min(100, Math.round((maxPage / book.totalPages) * 100)) : 0;
+    return { ...book, maxPage, pct };
+  });
+}
+
+// ========== 渲染 ==========
+function render() {
+  const data = loadData();
+  const today = todayStr();
+  const weekend = isWeekend();
+  const weekday = getWeekday();
+  const bookProgress = getBookProgress();
+  const todayCheckin = data.checkins.find(c => c.date === today);
+
+  // 日期栏
+  document.getElementById('dateBar').innerHTML = `
+    ${formatDate()} <span class="weekday">${weekday}</span>
+    ${weekend ? '<span class="weekend-tag">周末 · 读后感日</span>' : ''}
+  `;
+
+  // 连续打卡
+  renderStreak(data);
+
+  // 提醒卡片
+  const activeBook = bookProgress.find(b => b.active && b.pct < 100) || bookProgress.find(b => b.pct < 100);
+  const currentBook = activeBook || bookProgress[0];
+  const remaining = currentBook ? currentBook.totalPages - currentBook.maxPage : 0;
+
+  let reminderHTML = '';
+  if (todayCheckin) {
+    reminderHTML = `
+      <div class="icon-row">
+        <span class="emoji">🎉</span>
+        <span class="label">今日已打卡！</span>
+      </div>
+      <div class="msg">
+        今天读了《<span class="highlight">${todayCheckin.bookId}</span>》${todayCheckin.pageRange}。<br>
+        ${todayCheckin.summary ? '📝 ' + todayCheckin.summary : ''}
+        ${data.checkins.length >= 7 ? '<br><br>🔥 你已经坚持打卡 <b>' + data.checkins.length + '</b> 天了，非常棒！继续保持！' : '<br><br>👍 做得很好，明天继续加油！'}
+      </div>`;
+  } else {
+    reminderHTML = `
+      <div class="icon-row">
+        <span class="emoji">📖</span>
+        <span class="label">今日阅读提醒</span>
+      </div>
+      <div class="msg">
+        请安排 <span class="highlight">30 分钟</span> 专注阅读时间。<br>
+        当前在读：《<span class="highlight">${currentBook ? currentBook.id : '—'}</span>》
+        ${remaining > 0 ? `，还剩余约 <span class="highlight">${remaining}</span> 页` : ''}
+        ${weekend ? '<br><br>📌 <b>周末特别任务：</b>阅读后请写 100-200 字读后感！' : ''}
+      </div>`;
+  }
+  document.getElementById('reminderCard').innerHTML = reminderHTML;
+
+  // 进度条
+  let progressHTML = '';
+  bookProgress.forEach(b => {
+    const activeClass = b.active ? ' book-active' : '';
+    progressHTML += `
+      <div class="book-item">
+        <span class="book-name${activeClass}">${b.id}</span>
+        <div class="bar-wrap">
+          <div class="bar-fill" style="width:${b.pct}%"></div>
+          <div class="bar-text">${b.pct > 0 ? b.pct + '%' : ''}</div>
+        </div>
+        <span class="book-pct">${b.maxPage}/${b.totalPages}页</span>
+      </div>`;
+  });
+  document.getElementById('bookProgress').innerHTML = progressHTML;
+
+  // 打卡表单
+  const bookSelect = document.getElementById('bookSelect');
+  bookSelect.innerHTML = bookProgress.map(b =>
+    `<option value="${b.id}" ${b.active ? 'selected' : ''}>${b.id}（${b.author}·${b.semester}）</option>`
+  ).join('');
+
+  if (todayCheckin) {
+    document.getElementById('checkinTitle').textContent = '✅ 今日已完成打卡';
+    document.getElementById('checkinForm').style.display = 'none';
+    document.getElementById('checkinDone').style.display = 'block';
+    document.getElementById('checkinDone').innerHTML = `
+      <div style="text-align:center;padding:10px 0;color:var(--green);">
+        <div style="font-size:32px;margin-bottom:6px;">📚</div>
+        <div style="font-weight:700;">今日阅读任务已完成</div>
+        <div style="font-size:13px;color:var(--sub);margin-top:4px;">《${todayCheckin.bookId}》${todayCheckin.pageRange}</div>
+        ${todayCheckin.reflection ? '<div style="font-size:12px;color:var(--accent);margin-top:6px;background:var(--accent-light);padding:8px;border-radius:8px;">✏️ 读后感：' + todayCheckin.reflection + '</div>' : ''}
+      </div>`;
+  } else {
+    document.getElementById('checkinTitle').textContent = '📝 今日打卡';
+    document.getElementById('checkinForm').style.display = 'block';
+    document.getElementById('checkinDone').style.display = 'none';
+  }
+
+  // 周末额外任务
+  document.getElementById('weekendExtra').style.display = weekend && !todayCheckin ? 'block' : 'none';
+
+  // 打卡历史
+  const recentCheckins = data.checkins.slice().reverse().slice(0, 14);
+  const historyList = document.getElementById('historyList');
+  if (recentCheckins.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">还没有打卡记录，开始你的第一次阅读打卡吧！</div>';
+  } else {
+    historyList.innerHTML = recentCheckins.map(c => `
+      <div class="history-item">
+        <div class="hi-date">${c.date.slice(5)}</div>
+        <div class="hi-content">
+          <span class="hi-book">《${c.bookId}》</span> ${c.pageRange}
+          ${c.summary ? '<div class="hi-summary">' + c.summary + '</div>' : ''}
+          ${c.reflection ? '<div style="font-size:11px;color:#8b7e6a;margin-top:2px;">✏️ ' + c.reflection + '</div>' : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function renderStreak(data) {
+  const today = todayStr();
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const hasCheckin = data.checkins.some(c => c.date === ds);
+    days.push({ date: ds, done: hasCheckin, isToday: ds === today });
+  }
+  document.getElementById('streakBar').innerHTML = days.map(d =>
+    `<span class="streak-dot${d.done ? ' done' : ''}${d.isToday ? ' today' : ''}" title="${d.date}"></span>`
+  ).join('');
+}
+
+// ========== 打卡提交 ==========
+function submitCheckin() {
+  const bookId = document.getElementById('bookSelect').value;
+  const pageRange = document.getElementById('pageRange').value.trim();
+  const summary = document.getElementById('summary').value.trim();
+  const reflection = document.getElementById('reflection').value.trim();
+  const weekend = isWeekend();
+
+  if (!pageRange) {
+    alert('请填写今日页码范围');
+    return;
+  }
+
+  const data = loadData();
+  const today = todayStr();
+
+  // 检查是否已打卡
+  const existingIdx = data.checkins.findIndex(c => c.date === today);
+  const entry = {
+    date: today,
+    bookId,
+    pageRange,
+    summary,
+    reflection: weekend ? reflection : '',
+    time: new Date().toISOString()
+  };
+
+  if (existingIdx >= 0) {
+    data.checkins[existingIdx] = entry;
+  } else {
+    data.checkins.push(entry);
+  }
+
+  saveData(data);
+
+  // 显示反馈
+  const feedback = document.getElementById('feedback');
+  const msgs = [
+    '🌟 太棒了！今天的阅读任务已完成，坚持就是胜利！',
+    '👍 打卡成功！日积月累，终有所成。',
+    '📚 又读完了一部分，离目标更近一步！',
+    '💪 阅读是成长的阶梯，今天你又向上攀登了一步。',
+    '✨ 真不错！继续保持这个节奏，你是最棒的！',
+    '🎯 今日打卡完成！水滴石穿，贵在坚持。',
+  ];
+  const msg = weekend && reflection
+    ? '📖 周末打卡完成！读后感也写得很好，深度思考让阅读更有价值。'
+    : msgs[Math.floor(Math.random() * msgs.length)];
+  feedback.innerHTML = msg;
+  feedback.classList.add('show');
+
+  // 清空表单
+  if (existingIdx < 0) {
+    document.getElementById('pageRange').value = '';
+    document.getElementById('summary').value = '';
+    document.getElementById('reflection').value = '';
+  }
+
+  // 3秒后隐藏反馈
+  setTimeout(() => feedback.classList.remove('show'), 4000);
+
+  render();
+}
+
+// ========== 设置 ==========
+function toggleSettings() {
+  const modal = document.getElementById('settingsModal');
+  const isOpen = modal.style.display !== 'none';
+  if (isOpen) {
+    modal.style.display = 'none';
+  } else {
+    const books = getBooks();
+    document.getElementById('settingsForm').innerHTML = books.map(b => `
+      <div class="form-row">
+        <label>《${b.id}》（${b.author}·${b.semester}）总页数</label>
+        <input type="number" id="setting_${b.id}" value="${b.totalPages}" min="1" max="5000" />
+      </div>
+    `).join('');
+    modal.style.display = 'flex';
+  }
+}
+
+function saveSettings() {
+  const books = getBooks();
+  const settings = {};
+  books.forEach(b => {
+    const el = document.getElementById('setting_' + b.id);
+    if (el) {
+      const val = parseInt(el.value);
+      if (val > 0) settings[b.id] = val;
+    }
+  });
+  saveSettingsData(settings);
+  toggleSettings();
+  render();
+}
+
+// ========== 初始化 ==========
+render();
+
+// 点击遮罩关闭设置
+document.getElementById('settingsModal').addEventListener('click', function(e) {
+  if (e.target === this) toggleSettings();
+});
+</script>
+</body>
+</html>
