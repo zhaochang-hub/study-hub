@@ -4636,8 +4636,11 @@ function getReviewStatus(item) {
 // ===== Image Preview =====
 function showImagePreview(dataUrl) {
   var container = document.getElementById('imgPreviewContainer');
-  container.innerHTML = '<img class="img-preview" src="' + dataUrl + '" alt="题目截图预览" title="点击清除" onclick="clearImage()" style="cursor:pointer;">' +
-    '<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">点击图片可清除</div>';
+  container.innerHTML = '<div style="position:relative;display:inline-block;">' +
+    '<img class="img-preview" src="' + dataUrl + '" alt="题目截图预览" title="双击查看大图" ondblclick="viewImage(\'' + dataUrl + '\')" style="cursor:zoom-in;">' +
+    '<button type="button" onclick="clearImage()" title="删除截图" style="position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:#ef4444;color:#fff;border:2px solid #fff;font-size:11px;line-height:1;cursor:pointer;padding:0;font-weight:700;">✕</button>' +
+    '</div>' +
+    '<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">双击查看大图 · 点 ✕ 删除</div>';
   _pendingImage = dataUrl;
 }
 function clearImage() {
@@ -4647,8 +4650,11 @@ function clearImage() {
 
 function showAnswerImagePreview(dataUrl) {
   var container = document.getElementById('answerImgPreview');
-  container.innerHTML = '<img class="img-preview" src="' + dataUrl + '" alt="正确答案截图" title="点击清除" onclick="clearAnswerImage()" style="cursor:pointer;">' +
-    '<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">点击图片可清除</div>';
+  container.innerHTML = '<div style="position:relative;display:inline-block;">' +
+    '<img class="img-preview" src="' + dataUrl + '" alt="正确答案截图" title="双击查看大图" ondblclick="viewImage(\'' + dataUrl + '\')" style="cursor:zoom-in;">' +
+    '<button type="button" onclick="clearAnswerImage()" title="删除截图" style="position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:#ef4444;color:#fff;border:2px solid #fff;font-size:11px;line-height:1;cursor:pointer;padding:0;font-weight:700;">✕</button>' +
+    '</div>' +
+    '<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">双击查看大图 · 点 ✕ 删除</div>';
   _pendingAnswerImage = dataUrl;
 }
 function clearAnswerImage() {
