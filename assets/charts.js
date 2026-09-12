@@ -12,21 +12,21 @@
   var categories = ['26.09-11', '26.12-27.01', '27.01-02', '27.03-06', '27.07-08', '27.09-28.01', '28.02-06'];
   var tasks = [
     { name: 'Think Starter 1-12', start: 0, end: 0, cat: 0, color: accent2 },
-    { name: '语数英基础', start: 0, end: 1, cat: 0, color: accent },
-    { name: '文言文入门', start: 0, end: 3, cat: 0, color: '#e8a838' },
+    { name: 'Chinese/Math/English basics', start: 0, end: 1, cat: 0, color: accent },
+    { name: 'Classical Chinese intro', start: 0, end: 3, cat: 0, color: '#e8a838' },
     { name: 'Think 1 U1-6', start: 1, end: 1, cat: 1, color: accent2 },
-    { name: '代数思维', start: 0, end: 3, cat: 0, color: '#5a8a7a' },
+    { name: 'Algebraic thinking', start: 0, end: 3, cat: 0, color: '#5a8a7a' },
     { name: 'Think 1 U7-9', start: 2, end: 2, cat: 2, color: accent2 },
     { name: 'Think 1 U10-12', start: 3, end: 3, cat: 3, color: accent2 },
-    { name: '英语词汇1500', start: 1, end: 4, cat: 1, color: '#c46a5a' },
-    { name: '全等三角形', start: 3, end: 3, cat: 3, color: '#5a8a7a' },
+    { name: 'English vocab 1500', start: 1, end: 4, cat: 1, color: '#c46a5a' },
+    { name: 'Congruent triangles', start: 3, end: 3, cat: 3, color: '#5a8a7a' },
     { name: 'Think 2 U1-6', start: 4, end: 4, cat: 4, color: accent2 },
-    { name: '物理入门', start: 4, end: 5, cat: 4, color: '#8b6b9a' },
+    { name: 'Physics intro', start: 4, end: 5, cat: 4, color: '#8b6b9a' },
     { name: 'Think 2 U7-12', start: 5, end: 5, cat: 5, color: accent2 },
-    { name: '一次函数', start: 5, end: 5, cat: 5, color: '#5a8a7a' },
-    { name: '议论文阅读', start: 5, end: 6, cat: 5, color: '#e8a838' },
-    { name: '中考词汇1800+', start: 5, end: 6, cat: 5, color: '#c46a5a' },
-    { name: 'PET 备考冲刺', start: 6, end: 6, cat: 6, color: accent2 },
+    { name: 'Linear functions', start: 5, end: 5, cat: 5, color: '#5a8a7a' },
+    { name: 'Argumentative reading', start: 5, end: 6, cat: 5, color: '#e8a838' },
+    { name: 'Exam vocab 1800+', start: 5, end: 6, cat: 5, color: '#c46a5a' },
+    { name: 'PET exam sprint', start: 6, end: 6, cat: 6, color: accent2 },
   ];
   var seriesData = [];
   tasks.forEach(function(t, i) {
@@ -93,20 +93,20 @@
     tooltip: { trigger: 'item', appendToBody: true },
     animation: false,
     legend: {
-      data: ['初一', '初二'],
+      data: ['Grade 7', 'Grade 8'],
       textStyle: { color: ink },
       bottom: 0
     },
     radar: {
       indicator: [
-        { name: '语文', max: 5 },
-        { name: '数学', max: 5 },
-        { name: '英语', max: 5 },
-        { name: '物理', max: 5 },
-        { name: '道法', max: 5 },
-        { name: '历史', max: 5 },
-        { name: '地理', max: 5 },
-        { name: '生物', max: 5 }
+        { name: 'Chinese', max: 5 },
+        { name: 'Math', max: 5 },
+        { name: 'English', max: 5 },
+        { name: 'Physics', max: 5 },
+        { name: 'Civics', max: 5 },
+        { name: 'History', max: 5 },
+        { name: 'Geography', max: 5 },
+        { name: 'Biology', max: 5 }
       ],
       center: ['50%', '48%'],
       radius: '62%',
@@ -118,14 +118,14 @@
       data: [
         {
           value: [2.5, 3.0, 2.5, 1.0, 2.0, 2.0, 2.0, 2.0],
-          name: '初一',
+          name: 'Grade 7',
           lineStyle: { color: accent },
           areaStyle: { color: accent, opacity: 0.15 },
           itemStyle: { color: accent }
         },
         {
           value: [3.0, 3.5, 3.0, 3.5, 2.5, 2.5, 2.0, 2.0],
-          name: '初二',
+          name: 'Grade 8',
           lineStyle: { color: accent2 },
           areaStyle: { color: accent2, opacity: 0.15 },
           itemStyle: { color: accent2 }
@@ -143,7 +143,7 @@
     grid: { left: '8%', right: '4%', bottom: '10%', top: '5%' },
     xAxis: {
       type: 'category',
-      data: ['Starter\n3个月', 'Level 1\n7个月', 'Level 2\n8个月', 'PET备考\n2个月'],
+      data: ['Starter\n3 months', 'Level 1\n7 months', 'Level 2\n8 months', 'PET prep\n2 months'],
       axisLabel: { color: ink, fontWeight: 600, fontSize: 11 },
       axisLine: { lineStyle: { color: rule } },
       axisTick: { show: false }
@@ -151,14 +151,14 @@
     yAxis: {
       type: 'value',
       max: 35,
-      name: '周数',
+      name: 'Weeks',
       nameTextStyle: { color: muted },
       axisLabel: { color: muted },
       splitLine: { lineStyle: { color: rule, type: 'dashed' } }
     },
     series: [
       {
-        name: '已完成',
+        name: 'Done',
         type: 'bar',
         stack: 'total',
         barWidth: '50%',
@@ -166,7 +166,7 @@
         data: [0, 0, 0, 0]
       },
       {
-        name: '计划中',
+        name: 'Planned',
         type: 'bar',
         stack: 'total',
         barWidth: '50%',
@@ -180,8 +180,8 @@
 
   // --- Chart 4: Daily Task Completion ---
   var c4 = echarts.init(document.getElementById('chart-daily'), null, { renderer: 'svg' });
-  var days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
-  var tasks2 = ['英语听力', '语文阅读', '错题整理'];
+  var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  var tasks2 = ['English listening', 'Chinese reading', 'Error review'];
   var heatData = [];
   var sampleData = [[5, 5, 4, 5, 5, 3, 0], [5, 4, 5, 5, 4, 3, 0], [0, 5, 0, 5, 0, 5, 0]];
   tasks2.forEach(function(t, i) {
@@ -193,7 +193,7 @@
     tooltip: {
       position: 'top',
       formatter: function(p) {
-        return tasks2[p.value[1]] + ' · ' + days[p.value[0]] + '<br/>完成度: ' + ['', '未完成', '部分', '良好', '优秀', '满分'][p.value[2]];
+        return tasks2[p.value[1]] + ' · ' + days[p.value[0]] + '<br/>Completion: ' + ['', 'Missed', 'Partial', 'Good', 'Great', 'Perfect'][p.value[2]];
       },
       appendToBody: true
     },
@@ -246,14 +246,14 @@
     grid: { left: '3%', right: '4%', bottom: '12%', top: '5%', containLabel: true },
     xAxis: {
       type: 'category',
-      data: ['语文', '数学', '英语', '物理', '道法', '体育'],
+      data: ['Chinese', 'Math', 'English', 'Physics', 'Civics', 'PE'],
       axisLabel: { color: ink, fontWeight: 600 },
       axisLine: { lineStyle: { color: rule } },
       axisTick: { show: false }
     },
     yAxis: {
       type: 'value',
-      name: '分',
+      name: 'pts',
       nameTextStyle: { color: muted },
       axisLabel: { color: muted },
       splitLine: { lineStyle: { color: rule, type: 'dashed' } }
