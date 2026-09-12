@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>每日语文阅读打卡 — 一零一中学双榆树校区</title>
+<title>Daily Chinese Reading Check-in — Beijing 101 Middle School · Shuangyushu Campus</title>
 <style>
   :root {
     --bg: #faf8f5;
@@ -22,7 +22,7 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Serif SC", serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     max-width: 520px;
@@ -72,7 +72,7 @@
     font-size: 13px;
   }
 
-  /* 提醒卡片 */
+  /* Reminder card */
   .reminder-card {
     background: var(--card);
     border-radius: var(--radius);
@@ -105,7 +105,7 @@
     font-weight: 600;
   }
 
-  /* 进度卡片 */
+  /* Progress card */
   .progress-section {
     background: var(--card);
     border-radius: var(--radius);
@@ -131,10 +131,12 @@
     font-size: 13px;
   }
   .book-progress .book-name {
-    width: 90px;
+    width: 120px;
     flex-shrink: 0;
     font-weight: 500;
     text-align: right;
+    font-size: 11px;
+    line-height: 1.3;
   }
   .book-progress .bar-wrap {
     flex: 1;
@@ -162,7 +164,7 @@
     text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
   .book-progress .book-pct {
-    width: 44px;
+    width: 52px;
     flex-shrink: 0;
     font-size: 12px;
     color: var(--sub);
@@ -172,7 +174,7 @@
     color: var(--accent);
   }
 
-  /* 打卡表单 */
+  /* Check-in form */
   .checkin-card {
     background: var(--card);
     border-radius: var(--radius);
@@ -251,7 +253,7 @@
     margin-bottom: 4px;
   }
 
-  /* 反馈 */
+  /* Feedback */
   .feedback {
     background: var(--green-light);
     border-radius: var(--radius);
@@ -264,7 +266,7 @@
   }
   .feedback.show { display: block; }
 
-  /* 打卡历史 */
+  /* Check-in history */
   .history-section {
     background: var(--card);
     border-radius: var(--radius);
@@ -320,7 +322,7 @@
     padding: 20px 0;
   }
 
-  /* 连续打卡 */
+  /* Streak */
   .streak-bar {
     display: flex;
     gap: 4px;
@@ -350,7 +352,7 @@
     line-height: 1.8;
   }
 
-  /* 设置弹窗 */
+  /* Settings modal */
   .modal-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.3);
@@ -417,8 +419,8 @@
 <body>
 
 <div class="header">
-  <div class="school">北京一零一中学 · 双榆树校区</div>
-  <div class="title">每日语文阅读打卡</div>
+  <div class="school">Beijing 101 Middle School · Shuangyushu Campus</div>
+  <div class="title">Daily Chinese Reading Check-in</div>
 </div>
 
 <div class="date-bar" id="dateBar"></div>
@@ -428,74 +430,85 @@
 <div class="reminder-card" id="reminderCard"></div>
 
 <div class="progress-section" id="progressSection">
-  <h3>阅读进度</h3>
+  <h3>Reading Progress</h3>
   <div class="book-progress" id="bookProgress"></div>
 </div>
 
-<!-- 打卡成功反馈 -->
+<!-- Check-in success feedback -->
 <div class="feedback" id="feedback"></div>
 
-<!-- 今日已打卡则显示摘要 -->
+<!-- Show summary when already checked in today -->
 <div class="checkin-card" id="checkinCard">
-  <h3 id="checkinTitle">📝 今日打卡</h3>
+  <h3 id="checkinTitle">📝 Today's Check-in</h3>
   <div id="checkinForm">
     <div class="form-row">
-      <label>选择书籍</label>
+      <label>Select a book</label>
       <select id="bookSelect"></select>
     </div>
     <div class="form-row">
-      <label>今日页码范围（如：1-25）</label>
-      <input type="text" id="pageRange" placeholder="例：1-25" />
+      <label>Today's page range (e.g. 1-25)</label>
+      <input type="text" id="pageRange" placeholder="e.g. 1-25" />
     </div>
     <div class="form-row">
-      <label>一句话摘要</label>
-      <textarea id="summary" placeholder="今天读了什么内容？一句话概括……"></textarea>
+      <label>One-sentence summary</label>
+      <textarea id="summary" placeholder="What did you read today? Summarize in one sentence…"></textarea>
     </div>
     <div class="weekend-extra" id="weekendExtra" style="display:none;">
-      <div class="title">📖 周末特别任务：写一段读后感（100-200字）</div>
-      <textarea id="reflection" placeholder="写下你的阅读感悟……" style="min-height:80px;margin-top:4px;"></textarea>
+      <div class="title">📖 Weekend special: write a short reflection (100–200 words)</div>
+      <textarea id="reflection" placeholder="Share your thoughts about what you read…" style="min-height:80px;margin-top:4px;"></textarea>
     </div>
-    <button class="btn" onclick="submitCheckin()">✅ 完成打卡</button>
+    <button class="btn" onclick="submitCheckin()">✅ Complete Check-in</button>
   </div>
   <div id="checkinDone" style="display:none;"></div>
 </div>
 
 <div class="history-section">
-  <h3>📋 最近打卡记录</h3>
+  <h3>📋 Recent Check-ins</h3>
   <div class="history-list" id="historyList"></div>
 </div>
 
 <div class="footer">
-  坚持阅读，日积月累，终有所成。<br>
-  一零一中学双榆树校区 · 初一语文
+  Keep reading — small steps every day lead to great things.<br>
+  Beijing 101 Middle School · Shuangyushu Campus · Grade 7 Chinese
 </div>
 
-<button class="settings-btn" onclick="toggleSettings()" title="设置书籍页数">⚙</button>
+<button class="settings-btn" onclick="toggleSettings()" title="Book page settings">⚙</button>
 
 <div class="modal-overlay" id="settingsModal" style="display:none;">
   <div class="modal">
-    <h3>📚 书籍总页数设置</h3>
+    <h3>📚 Total Page Count Settings</h3>
     <div id="settingsForm"></div>
     <div class="btn-row">
-      <button class="btn-secondary" onclick="toggleSettings()">取消</button>
-      <button class="btn" style="flex:1;" onclick="saveSettings()">保存</button>
+      <button class="btn-secondary" onclick="toggleSettings()">Cancel</button>
+      <button class="btn" style="flex:1;" onclick="saveSettings()">Save</button>
     </div>
   </div>
 </div>
 
 <script>
-// ========== 书籍数据 ==========
+// ========== Book data ==========
+const BOOK_TITLES = {
+  '朝花夕拾': 'Dawn Blossoms Plucked at Dusk',
+  '西游记': 'Journey to the West',
+  '骆驼祥子': 'Camel Xiangzi',
+  '海底两万里': 'Twenty Thousand Leagues Under the Sea',
+};
+
 const DEFAULT_BOOKS = [
-  { id: '朝花夕拾', author: '鲁迅', semester: '初一上', totalPages: 120, active: true },
-  { id: '西游记', author: '吴承恩', semester: '初一上', totalPages: 850, active: true },
-  { id: '骆驼祥子', author: '老舍', semester: '初一下', totalPages: 250, active: false },
-  { id: '海底两万里', author: '凡尔纳', semester: '初一下', totalPages: 420, active: false },
+  { id: '朝花夕拾', author: 'Lu Xun', semester: 'Grade 7 Fall', totalPages: 120, active: true },
+  { id: '西游记', author: "Wu Cheng'en", semester: 'Grade 7 Fall', totalPages: 850, active: true },
+  { id: '骆驼祥子', author: 'Lao She', semester: 'Grade 7 Spring', totalPages: 250, active: false },
+  { id: '海底两万里', author: 'Jules Verne', semester: 'Grade 7 Spring', totalPages: 420, active: false },
 ];
 
 const STORAGE_KEY = 'reading_checkin_data';
 const SETTINGS_KEY = 'reading_checkin_settings';
 
-// ========== 数据管理 ==========
+function bookDisplayName(id) {
+  return BOOK_TITLES[id] || id;
+}
+
+// ========== Data management ==========
 function loadData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -526,7 +539,7 @@ function getBooks() {
   }));
 }
 
-// ========== 日期工具 ==========
+// ========== Date utilities ==========
 function todayStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -538,16 +551,16 @@ function isWeekend() {
 }
 
 function getWeekday() {
-  const days = ['日','一','二','三','四','五','六'];
-  return '周' + days[new Date().getDay()];
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return days[new Date().getDay()];
 }
 
 function formatDate() {
   const d = new Date();
-  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-// ========== 阅读进度计算 ==========
+// ========== Reading progress ==========
 function getBookProgress() {
   const data = loadData();
   const books = getBooks();
@@ -566,7 +579,7 @@ function getBookProgress() {
   });
 }
 
-// ========== 渲染 ==========
+// ========== Render ==========
 function render() {
   const data = loadData();
   const today = todayStr();
@@ -575,16 +588,16 @@ function render() {
   const bookProgress = getBookProgress();
   const todayCheckin = data.checkins.find(c => c.date === today);
 
-  // 日期栏
+  // Date bar
   document.getElementById('dateBar').innerHTML = `
     ${formatDate()} <span class="weekday">${weekday}</span>
-    ${weekend ? '<span class="weekend-tag">周末 · 读后感日</span>' : ''}
+    ${weekend ? '<span class="weekend-tag">Weekend · Reflection Day</span>' : ''}
   `;
 
-  // 连续打卡
+  // Streak
   renderStreak(data);
 
-  // 提醒卡片
+  // Reminder card
   const activeBook = bookProgress.find(b => b.active && b.pct < 100) || bookProgress.find(b => b.pct < 100);
   const currentBook = activeBook || bookProgress[0];
   const remaining = currentBook ? currentBook.totalPages - currentBook.maxPage : 0;
@@ -594,81 +607,81 @@ function render() {
     reminderHTML = `
       <div class="icon-row">
         <span class="emoji">🎉</span>
-        <span class="label">今日已打卡！</span>
+        <span class="label">Checked in today!</span>
       </div>
       <div class="msg">
-        今天读了《<span class="highlight">${todayCheckin.bookId}</span>》${todayCheckin.pageRange}。<br>
+        Today you read <span class="highlight">${bookDisplayName(todayCheckin.bookId)}</span> (${todayCheckin.pageRange}).<br>
         ${todayCheckin.summary ? '📝 ' + todayCheckin.summary : ''}
-        ${data.checkins.length >= 7 ? '<br><br>🔥 你已经坚持打卡 <b>' + data.checkins.length + '</b> 天了，非常棒！继续保持！' : '<br><br>👍 做得很好，明天继续加油！'}
+        ${data.checkins.length >= 7 ? '<br><br>🔥 You have checked in <b>' + data.checkins.length + '</b> days — amazing! Keep it up!' : '<br><br>👍 Great job — see you tomorrow!'}
       </div>`;
   } else {
     reminderHTML = `
       <div class="icon-row">
         <span class="emoji">📖</span>
-        <span class="label">今日阅读提醒</span>
+        <span class="label">Today's Reading Reminder</span>
       </div>
       <div class="msg">
-        请安排 <span class="highlight">30 分钟</span> 专注阅读时间。<br>
-        当前在读：《<span class="highlight">${currentBook ? currentBook.id : '—'}</span>》
-        ${remaining > 0 ? `，还剩余约 <span class="highlight">${remaining}</span> 页` : ''}
-        ${weekend ? '<br><br>📌 <b>周末特别任务：</b>阅读后请写 100-200 字读后感！' : ''}
+        Set aside <span class="highlight">30 minutes</span> for focused reading.<br>
+        Currently reading: <span class="highlight">${currentBook ? bookDisplayName(currentBook.id) : '—'}</span>
+        ${remaining > 0 ? ` — about <span class="highlight">${remaining}</span> pages left` : ''}
+        ${weekend ? '<br><br>📌 <b>Weekend special:</b> After reading, write a 100–200 word reflection!' : ''}
       </div>`;
   }
   document.getElementById('reminderCard').innerHTML = reminderHTML;
 
-  // 进度条
+  // Progress bars
   let progressHTML = '';
   bookProgress.forEach(b => {
     const activeClass = b.active ? ' book-active' : '';
     progressHTML += `
       <div class="book-item">
-        <span class="book-name${activeClass}">${b.id}</span>
+        <span class="book-name${activeClass}">${bookDisplayName(b.id)}</span>
         <div class="bar-wrap">
           <div class="bar-fill" style="width:${b.pct}%"></div>
           <div class="bar-text">${b.pct > 0 ? b.pct + '%' : ''}</div>
         </div>
-        <span class="book-pct">${b.maxPage}/${b.totalPages}页</span>
+        <span class="book-pct">${b.maxPage}/${b.totalPages} pg</span>
       </div>`;
   });
   document.getElementById('bookProgress').innerHTML = progressHTML;
 
-  // 打卡表单
+  // Check-in form
   const bookSelect = document.getElementById('bookSelect');
   bookSelect.innerHTML = bookProgress.map(b =>
-    `<option value="${b.id}" ${b.active ? 'selected' : ''}>${b.id}（${b.author}·${b.semester}）</option>`
+    `<option value="${b.id}" ${b.active ? 'selected' : ''}>${bookDisplayName(b.id)} (${b.author} · ${b.semester})</option>`
   ).join('');
 
   if (todayCheckin) {
-    document.getElementById('checkinTitle').textContent = '✅ 今日已完成打卡';
+    document.getElementById('checkinTitle').textContent = '✅ Checked In Today';
     document.getElementById('checkinForm').style.display = 'none';
     document.getElementById('checkinDone').style.display = 'block';
     document.getElementById('checkinDone').innerHTML = `
       <div style="text-align:center;padding:10px 0;color:var(--green);">
         <div style="font-size:32px;margin-bottom:6px;">📚</div>
-        <div style="font-weight:700;">今日阅读任务已完成</div>
-        <div style="font-size:13px;color:var(--sub);margin-top:4px;">《${todayCheckin.bookId}》${todayCheckin.pageRange}</div>
-        ${todayCheckin.reflection ? '<div style="font-size:12px;color:var(--accent);margin-top:6px;background:var(--accent-light);padding:8px;border-radius:8px;">✏️ 读后感：' + todayCheckin.reflection + '</div>' : ''}
+        <div style="font-weight:700;">Today's reading is complete</div>
+        <div style="font-size:13px;color:var(--sub);margin-top:4px;">${bookDisplayName(todayCheckin.bookId)} · ${todayCheckin.pageRange}</div>
+        ${todayCheckin.reflection ? '<div style="font-size:12px;color:var(--accent);margin-top:6px;background:var(--accent-light);padding:8px;border-radius:8px;">✏️ Reflection: ' + todayCheckin.reflection + '</div>' : ''}
       </div>`;
   } else {
-    document.getElementById('checkinTitle').textContent = '📝 今日打卡';
+    document.getElementById('checkinTitle').textContent = "📝 Today's Check-in";
     document.getElementById('checkinForm').style.display = 'block';
     document.getElementById('checkinDone').style.display = 'none';
   }
 
-  // 周末额外任务
+  // Weekend extra task
   document.getElementById('weekendExtra').style.display = weekend && !todayCheckin ? 'block' : 'none';
 
-  // 打卡历史
+  // Check-in history
   const recentCheckins = data.checkins.slice().reverse().slice(0, 14);
   const historyList = document.getElementById('historyList');
   if (recentCheckins.length === 0) {
-    historyList.innerHTML = '<div class="history-empty">还没有打卡记录，开始你的第一次阅读打卡吧！</div>';
+    historyList.innerHTML = '<div class="history-empty">No check-ins yet — start your first reading check-in!</div>';
   } else {
     historyList.innerHTML = recentCheckins.map(c => `
       <div class="history-item">
         <div class="hi-date">${c.date.slice(5)}</div>
         <div class="hi-content">
-          <span class="hi-book">《${c.bookId}》</span> ${c.pageRange}
+          <span class="hi-book">${bookDisplayName(c.bookId)}</span> ${c.pageRange}
           ${c.summary ? '<div class="hi-summary">' + c.summary + '</div>' : ''}
           ${c.reflection ? '<div style="font-size:11px;color:#8b7e6a;margin-top:2px;">✏️ ' + c.reflection + '</div>' : ''}
         </div>
@@ -692,7 +705,7 @@ function renderStreak(data) {
   ).join('');
 }
 
-// ========== 打卡提交 ==========
+// ========== Check-in submit ==========
 function submitCheckin() {
   const bookId = document.getElementById('bookSelect').value;
   const pageRange = document.getElementById('pageRange').value.trim();
@@ -701,14 +714,14 @@ function submitCheckin() {
   const weekend = isWeekend();
 
   if (!pageRange) {
-    alert('请填写今日页码范围');
+    alert("Please enter today's page range.");
     return;
   }
 
   const data = loadData();
   const today = todayStr();
 
-  // 检查是否已打卡
+  // Check if already checked in
   const existingIdx = data.checkins.findIndex(c => c.date === today);
   const entry = {
     date: today,
@@ -727,36 +740,36 @@ function submitCheckin() {
 
   saveData(data);
 
-  // 显示反馈
+  // Show feedback
   const feedback = document.getElementById('feedback');
   const msgs = [
-    '🌟 太棒了！今天的阅读任务已完成，坚持就是胜利！',
-    '👍 打卡成功！日积月累，终有所成。',
-    '📚 又读完了一部分，离目标更近一步！',
-    '💪 阅读是成长的阶梯，今天你又向上攀登了一步。',
-    '✨ 真不错！继续保持这个节奏，你是最棒的！',
-    '🎯 今日打卡完成！水滴石穿，贵在坚持。',
+    '🌟 Awesome! Today\'s reading is done — persistence wins!',
+    '👍 Check-in successful! Small steps every day add up.',
+    '📚 Another section finished — you\'re getting closer to the goal!',
+    '💪 Reading is a ladder to growth — you climbed another step today.',
+    '✨ Nice work! Keep this pace going — you\'re doing great!',
+    '🎯 Today\'s check-in is complete! Steady effort pays off.',
   ];
   const msg = weekend && reflection
-    ? '📖 周末打卡完成！读后感也写得很好，深度思考让阅读更有价值。'
+    ? '📖 Weekend check-in complete! Your reflection shows real thought — that makes reading even more valuable.'
     : msgs[Math.floor(Math.random() * msgs.length)];
   feedback.innerHTML = msg;
   feedback.classList.add('show');
 
-  // 清空表单
+  // Clear form
   if (existingIdx < 0) {
     document.getElementById('pageRange').value = '';
     document.getElementById('summary').value = '';
     document.getElementById('reflection').value = '';
   }
 
-  // 3秒后隐藏反馈
+  // Hide feedback after 4 seconds
   setTimeout(() => feedback.classList.remove('show'), 4000);
 
   render();
 }
 
-// ========== 设置 ==========
+// ========== Settings ==========
 function toggleSettings() {
   const modal = document.getElementById('settingsModal');
   const isOpen = modal.style.display !== 'none';
@@ -766,7 +779,7 @@ function toggleSettings() {
     const books = getBooks();
     document.getElementById('settingsForm').innerHTML = books.map(b => `
       <div class="form-row">
-        <label>《${b.id}》（${b.author}·${b.semester}）总页数</label>
+        <label>${bookDisplayName(b.id)} (${b.author} · ${b.semester}) — total pages</label>
         <input type="number" id="setting_${b.id}" value="${b.totalPages}" min="1" max="5000" />
       </div>
     `).join('');
@@ -789,10 +802,10 @@ function saveSettings() {
   render();
 }
 
-// ========== 初始化 ==========
+// ========== Init ==========
 render();
 
-// 点击遮罩关闭设置
+// Close settings when clicking overlay
 document.getElementById('settingsModal').addEventListener('click', function(e) {
   if (e.target === this) toggleSettings();
 });
